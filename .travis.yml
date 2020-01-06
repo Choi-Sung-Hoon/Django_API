@@ -8,7 +8,8 @@ virtualenv:
 install:
   - pip install -r requirements.txt
 script: flake8
-
+after_success:
+  - coveralls
 #jobs:
 #  include:
 #    - stage: "Test"
