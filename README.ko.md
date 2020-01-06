@@ -1,4 +1,4 @@
-Django_API
+Django_API [![Build Status](https://travis-ci.com/Choi-Sung-Hoon/Django_API.svg?branch=master)](https://travis-ci.com/Choi-Sung-Hoon/Django_API) [![Coverage Status](https://coveralls.io/repos/github/Choi-Sung-Hoon/Django_API/badge.svg?branch=master)](https://coveralls.io/github/Choi-Sung-Hoon/Django_API?branch=master)
 ==========
 
 간단한 선거 애플리케이션을 위한 REST API 프로젝트입니다. 이 프로젝트는 Travis CI에 의해서 관리될 것입니다.

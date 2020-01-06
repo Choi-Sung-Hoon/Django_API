@@ -1,4 +1,4 @@
-Django_API
+Django_API [![Build Status](https://travis-ci.com/Choi-Sung-Hoon/Django_API.svg?branch=master)](https://travis-ci.com/Choi-Sung-Hoon/Django_API) [![Coverage Status](https://coveralls.io/repos/github/Choi-Sung-Hoon/Django_API/badge.svg?branch=master)](https://coveralls.io/github/Choi-Sung-Hoon/Django_API?branch=master)
 ==========
 
 REST API project for a basic poll application. This project will be managed by Travis CI. 
