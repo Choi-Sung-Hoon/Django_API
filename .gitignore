@@ -4,3 +4,4 @@ lib/
 .coveralls.yml
 *.pyc
 **/__pycache__/*
+*.sqlite3
