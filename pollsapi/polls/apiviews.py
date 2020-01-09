@@ -39,7 +39,7 @@ class CreateVote(generics.CreateAPIView):
         data = {'choice': choice_pk, 'poll': pk, 'voted_by': voted_by}
         serializer = VoteSerializer(data=data)
         if serializer.is_valid():
-            vote = serializer.save()
-            return Response(serialzier.data, status=status.HTTP_201_CREATED)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
