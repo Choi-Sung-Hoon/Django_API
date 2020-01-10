@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from .models import Poll, Choice, Vote
 
 
-class userSerializer(serializers.ModelSerializer):
-    class meta:
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
         model = User
         fields = ('username', 'email', 'password')
         extra_kwars = {'password': {'write_only': True}}
