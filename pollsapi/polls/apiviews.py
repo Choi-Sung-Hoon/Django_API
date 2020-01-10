@@ -8,6 +8,7 @@ from .models import Poll, Choice
 from .serializers import PollSerializer, ChoiceSerializer,\
     VoteSerializer, UserSerializer
 
+from django.contrib.auth import authenticate
 
 class UserCreate(generics.CreateAPIView):
     authentication_classes = ()
@@ -49,3 +50,16 @@ class CreateVote(generics.CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginView(APIView):
+    permission_classes = ()
+
+    def post(self, request,):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        user = authenticate(username=username, password=password)
+        if user:
+            return Response({"token": user.auth_token.key})
+        else:
+            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BADREQUEST)
