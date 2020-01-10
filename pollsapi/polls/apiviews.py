@@ -11,6 +11,7 @@ from .serializers import PollSerializer, ChoiceSerializer,\
 
 from django.contrib.auth import authenticate
 
+
 class UserCreate(generics.CreateAPIView):
     authentication_classes = ()
     permission_classes = ()
@@ -47,7 +48,7 @@ class ChoiceList(generics.ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         poll = Poll.objects.get(pk=self.kwargs["pk"])
-        if not reuqest.user == poll.created_by:
+        if not request.user == poll.created_by:
             raise PermissionDenied("You can not create choice for this poll.")
         return super().post(request, *args, **kwargs)
 
