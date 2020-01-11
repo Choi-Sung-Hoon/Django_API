@@ -10,7 +10,7 @@ install:
 script:
   - flake8
   - python pollsapi/manage.py test
-  - coverage run --source=. pollsapi/manage.py test
+  - coverage run --source=pollsapi/polls pollsapi/manage.py test pollsapi
 after_success:
   - coveralls
 #jobs:
