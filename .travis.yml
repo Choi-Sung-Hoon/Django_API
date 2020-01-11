@@ -7,12 +7,10 @@ virtualenv:
   system_site_packages: true
 install:
   - pip install -r requirements.txt
-before_script:
-  - cd pollsapi
 script:
   - flake8
-  - python manage.py test
-  - coverage run --source=polls manage.py test
+  - python pollsapi/manage.py test pollsapi
+  - coverage run --source=pollsapi/polls pollsapi/manage.py test pollsapi
 after_success:
   - coveralls
 #jobs:
