@@ -53,8 +53,7 @@ class ChoiceList(generics.ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
 
-class CreateVote(generics.CreateAPIView):
-    serialzier_class = VoteSerializer
+class CreateVote(APIView):
 
     def post(self, request, pk, choice_pk):
         voted_by = request.data.get("voted_by")
