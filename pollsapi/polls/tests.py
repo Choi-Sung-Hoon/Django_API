@@ -30,11 +30,13 @@ class TestPoll(APITestCase):
             email='testuser@test.com',
             password='test')
 
+    # test with APIRquestFactory
     def test_list(self):
         request = self.factory.get(
             self.uri,
             HTTP_AUTHORIZATION='Token {}'.format(self.token.key))
         request.user = self.user
+        # try to access PollList view, /polls/
         response = self.view(request)
         self.assertEqual(
             response.status_code,
@@ -42,8 +44,10 @@ class TestPoll(APITestCase):
             'Expected REsponse Code 200, received {0} instead.'
             .format(response.status_code))
 
+    # test with APIClient
     def test_list2(self):
         self.client.login(username='test', password='test')
+        # try to get data from /polls/
         response = self.client.get(self.uri)
         self.assertEqual(
             response.status_code,
@@ -51,6 +55,7 @@ class TestPoll(APITestCase):
             'Expected Response Code 200, received {0} instead.'
             .format(response.status_code))
 
+    # POST test with APIClient
     def test_create(self):
         self.client.login(username='test', password='test')
         params = {
