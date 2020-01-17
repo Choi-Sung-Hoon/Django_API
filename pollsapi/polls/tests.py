@@ -68,3 +68,34 @@ class TestPoll(APITestCase):
             201,
             'Expected Response Code 201, received {0} instead.'
             .format(response.status_code))
+
+
+class TestChoice(APITestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.view = apiviews.ChoiceList.as_view({'get': 'list'})
+        self.uri = '/polls/1/choices/'
+
+        self.client = APIClient()
+
+        self.user = self.setup_user()
+        self.token = Token.objects.create(user=self.user)
+        self.token.save()
+
+    @staticmethod
+    def setup_user():
+        User = get_user_model()
+        return User.objects.create_user(
+            'test',
+            email='testuser@test.com',
+            password='test')
+
+    def test_list(self):
+        request = self.factory.get(self.uri)
+        response = self.view(request)
+        self.assertEqual(
+            response.status_code,
+            200,
+            'Expected Response Code 200, received {0} instead.'
+            .format(response.status_code))
+
