@@ -41,7 +41,7 @@ class TestPoll(APITestCase):
         self.assertEqual(
             response.status_code,
             200,
-            'Expected REsponse Code 200, received {0} instead.'
+            'Expected Response Code 200, received {0} instead.'
             .format(response.status_code))
 
     # test with APIClient
