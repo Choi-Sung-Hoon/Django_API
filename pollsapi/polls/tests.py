@@ -71,14 +71,14 @@ class TestPoll(APITestCase):
 
 
 class TestChoice(APITestCase):
-    def setUp(self): 
+    def setUp(self):
         self.factory = APIRequestFactory()
         self.client = APIClient()
 
         self.user = self.setup_user()
         self.token = Token.objects.create(user=self.user)
         self.token.save()
-        
+
         self.create_poll(self)
 
     @staticmethod
