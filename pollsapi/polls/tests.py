@@ -30,7 +30,7 @@ class TestPoll(APITestCase):
             email='testuser@test.com',
             password='test')
 
-    # test with APIRquestFactory
+    # GET test with APIRquestFactory
     def test_list(self):
         request = self.factory.get(
             self.uri,
@@ -44,7 +44,7 @@ class TestPoll(APITestCase):
             'Expected Response Code 200, received {0} instead.'
             .format(response.status_code))
 
-    # test with APIClient
+    # GET test with APIClient
     def test_list2(self):
         self.client.login(username='test', password='test')
         # try to get data from /polls/
@@ -71,16 +71,15 @@ class TestPoll(APITestCase):
 
 
 class TestChoice(APITestCase):
-    def setUp(self):
+    def setUp(self): 
         self.factory = APIRequestFactory()
-        self.view = apiviews.ChoiceList.as_view({'get': 'list'})
-        self.uri = '/polls/1/choices/'
-
         self.client = APIClient()
 
         self.user = self.setup_user()
         self.token = Token.objects.create(user=self.user)
         self.token.save()
+        
+        self.create_poll(self)
 
     @staticmethod
     def setup_user():
@@ -90,12 +89,19 @@ class TestChoice(APITestCase):
             email='testuser@test.com',
             password='test')
 
-    def test_list(self):
-        request = self.factory.get(self.uri)
-        response = self.view(request)
+    # creaet poll with APIClient
+    @staticmethod
+    def create_poll(self):
+        self.view = apiviews.PollViewSet.as_view({'get': 'list'})
+        self.uri = '/polls/'
+        self.client.login(username='test', password='test')
+        params = {
+            "question": "How are you?",
+            "created_by": 1
+        }
+        response = self.client.post(self.uri, params)
         self.assertEqual(
             response.status_code,
-            200,
-            'Expected Response Code 200, received {0} instead.'
+            201,
+            'Expected Response Code 201, received {0} instead.'
             .format(response.status_code))
-
