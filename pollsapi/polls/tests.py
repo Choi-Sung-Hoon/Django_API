@@ -93,11 +93,37 @@ class TestChoice(APITestCase):
     @staticmethod
     def create_poll(self):
         self.view = apiviews.PollViewSet.as_view({'get': 'list'})
-        self.uri = '/polls/'
         self.client.login(username='test', password='test')
+        self.uri = '/polls/'
         params = {
             "question": "How are you?",
             "created_by": 1
+        }
+        response = self.client.post(self.uri, params)
+        self.assertEqual(
+            response.status_code,
+            201,
+            'Expected Response Code 201, received {0} instead.'
+            .format(response.status_code))
+
+    # GET test with APIClient
+    def test_list(self):
+        self.client.login(username='test', password='test')
+        self.uri = '/polls/1/choices/'
+        response = self.client.get(self.uri)
+        self.assertEqual(
+            response.status_code,
+            200,
+            'Expected Response Code 200, received {0} instead.'
+            .format(response.status_code))
+
+    # POST test with API Client
+    def test_create(self):
+        self.client.login(username='test', password='test')
+        self.uri = '/polls/1/choices/'
+        params = {
+            "choice_text": "test",
+            "poll": 1
         }
         response = self.client.post(self.uri, params)
         self.assertEqual(
