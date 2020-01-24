@@ -22,6 +22,10 @@ class TestPoll(APITestCase):
         self.token = Token.objects.create(user=self.user1)
         self.token.save()
 
+        self.user2 = self.setup_user('test_user2', 'test_user2@test.com', 'test_user2')
+        self.token = Token.objects.create(user=self.user2)
+        self.token.save()
+
     @staticmethod
     def setup_user(username, email, password):
         User = get_user_model()
@@ -71,6 +75,59 @@ class TestPoll(APITestCase):
             response.status_code,
             201,
             'Expected Response Code 201, received {0} instead.'
+            .format(response.status_code))
+
+    # DELETE test with APIClient. This should return 204 for
+    # success from deleting a poll. There's no content in respnose
+    # because there's no return in PollViewSet class in apiviews.py
+    def test_delete(self):
+        self.client.login(username='test_user1', password='test_user1')
+        User = get_user_model()
+
+        # create a poll with POST
+        params = {
+            "question": "How are you?",
+            "created_by": User.objects.get(username='test_user1').pk
+        }
+        response = self.client.post(self.uri, params)
+        self.assertEqual(
+            response.status_code,
+            201,
+            'Expected Response Code 201, received {0} instead.'
+            .format(response.status_code))
+
+        response = self.client.delete(self.uri + "1/")
+        self.assertEqual(
+            response.status_code,
+            204,
+            'Expected Response Code 204, received {0} instead.'
+            .format(response.status_code))
+
+    # DELETE test with APIClient. This should return 403 for
+    # permission denied from deleting a poll.
+    def test_delete_permission_denied(self):
+        self.client.login(username='test_user1', password='test_user1')
+        User = get_user_model()
+
+        # create a poll with POST
+        params = {
+            "question": "How are you?",
+            "created_by": User.objects.get(username='test_user1').pk
+        }
+        response = self.client.post(self.uri, params)
+        self.assertEqual(
+            response.status_code,
+            201,
+            'Expected Response Code 201, received {0} instead.'
+            .format(response.status_code))
+        self.client.logout()
+
+        self.client.login(username='test_user2', password='test_user2')
+        response = self.client.delete(self.uri + "1/")
+        self.assertEqual(
+            response.status_code,
+            403,
+            'Expected Response Code 403, received {0} instead.'
             .format(response.status_code))
 
 
