@@ -345,4 +345,3 @@ class TestLogin(APITestCase):
             400,
             'Expected Response Code 400, received {0} instead.'
             .format(response.status_code))
-
