@@ -83,8 +83,6 @@ class TestPoll(APITestCase):
     def test_delete(self):
         self.client.login(username='test_user1', password='test_user1')
         User = get_user_model()
-
-        # create a poll with POST
         params = {
             "question": "How are you?",
             "created_by": User.objects.get(username='test_user1').pk
@@ -108,8 +106,6 @@ class TestPoll(APITestCase):
     def test_delete_permission_denied(self):
         self.client.login(username='test_user1', password='test_user1')
         User = get_user_model()
-
-        # create a poll with POST
         params = {
             "question": "How are you?",
             "created_by": User.objects.get(username='test_user1').pk
@@ -300,3 +296,53 @@ class TestVote(APITestCase):
             400,
             'Expected Response Code 400, received {0} instead.'
             .format(response.status_code))
+
+
+class TestLogin(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = self.setup_user('test_user1', 'test_user1@test.com', 'test_user1')
+        self.token = Token.objects.create(user=self.user)
+        self.token.save()
+
+    @staticmethod
+    def setup_user(username, email, password):
+        User = get_user_model()
+        return User.objects.create_user(
+            username,
+            email=email,
+            password=password)
+
+    # POST test with APIClient. This should return 200 for success from
+    # signing in.
+    def test_login(self):
+        self.client.login(username='test_user1', password='test_user1')
+        self.uri = '/login/'
+        params = {
+            "username": "test_user1",
+            "password": "test_user1"
+        }
+        response = self.client.post(self.uri, params)
+        self.assertEqual(
+            response.status_code,
+            200,
+            'Expected Response Code 200, received {0} instead.'
+            .format(response.status_code))
+
+    # POST test with APIClient. This should return 400 for bad request
+    # from sigining in.
+    def test_login_bad_request(self):
+        self.client.login(username='test_user1', password='test_user1')
+        self.uri = '/login/'
+        params = {
+            "username": "test_user2",
+            "password": "test_user2"
+        }
+        response = self.client.post(self.uri, params)
+        self.assertEqual(
+            response.status_code,
+            400,
+            'Expected Response Code 400, received {0} instead.'
+            .format(response.status_code))
+
