@@ -179,4 +179,4 @@ Tested Endpoints
 - [x] `/polls/<pk>/choices/`
 - [x] `/polls/<pk>/choices/<choice_pk>/`
 - [x] `/polls/<pk>/choices/<choice_pk/vote/`
-- [ ] `/login/`
+- [x] `/login/`
