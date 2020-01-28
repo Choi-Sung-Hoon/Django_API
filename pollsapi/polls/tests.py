@@ -1,3 +1,5 @@
+from .views import polls_list, polls_detail
+
 from django.test import TestCase
 from rest_framework.test import APITestCase
 from rest_framework.test import APIRequestFactory
@@ -344,4 +346,58 @@ class TestLogin(APITestCase):
             response.status_code,
             400,
             'Expected Response Code 400, received {0} instead.'
+            .format(response.status_code))
+
+
+class TestView(TestCase):
+    def setUp(self):
+        self.user1 = self.setup_user('test_user1', 'test_user1@test.com', 'test_user1')
+        self.token = Token.objects.create(user=self.user1)
+        self.token.save()
+
+        self.create_poll(self)
+
+    @staticmethod
+    def setup_user(username, email, password):
+        User = get_user_model()
+        return User.objects.create_user(
+            username,
+            email=email,
+            password=password)
+
+    @staticmethod
+    def create_poll(self):
+        client = APIClient()
+        client.login(username='test_user1', password='test_user1')
+        uri = '/polls/'
+        User = get_user_model()
+        params = {
+            "question": "How are you?",
+            "created_by": User.objects.get(username='test_user1').pk
+        }
+        response = client.post(uri, params)
+        self.assertEqual(
+            response.status_code,
+            201,
+            'Expected Response Code 201, received {0} instead.'
+            .format(response.status_code))
+
+    # Class Based View test for '/polls'
+    def test_polls_list_view(self):
+        request = self.client.get('/polls')
+        response = polls_list(request)
+        self.assertEqual(
+            response.status_code,
+            200,
+            'Expected Response Code 200, received {0} instead.'
+            .format(response.status_code))
+
+    # Class Based View test for '/polls/<pk:int>'
+    def test_polls_detail_view(self):
+        request = self.client.get('/polls')
+        response = polls_list(request)
+        self.assertEqual(
+            response.status_code,
+            200,
+            'Expected Response Code 200, received {0} instead.'
             .format(response.status_code))
