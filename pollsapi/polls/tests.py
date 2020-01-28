@@ -394,8 +394,8 @@ class TestView(TestCase):
 
     # Class Based View test for '/polls/<pk:int>'
     def test_polls_detail_view(self):
-        request = self.client.get('/polls/1')
-        response = polls_list(request)
+        request = self.client.get('/polls')
+        response = polls_detail(request, pk=1)
         self.assertEqual(
             response.status_code,
             200,
