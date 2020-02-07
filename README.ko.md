@@ -124,11 +124,11 @@ Endpoints
     Quit the server with CONTROL-C.
     ```
     
-10. 브라우저에서 어드민 로그인 페이지에 접속하고 어드민으로 로그인하세요 (IP주소는 보안상 가렸습니다)
+10. 브라우저에서 서버에 접속하고 어드민으로 로그인하세요 (IP주소는 보안상 가렸습니다)
     ```
-    https://***.***.***.***:8000/admin/
+    https://***.***.***.***:8000/
     ```
-    ![image](https://user-images.githubusercontent.com/33472400/73090540-e5c85600-3f1b-11ea-9ed9-8b9f3e834f93.png)
+    ![image](https://user-images.githubusercontent.com/33472400/74009806-544eee80-49c7-11ea-9b23-a8406bd91a0b.png)
 
 11. 한 번 로그인 하고나면, 다음과 같이 endpoint에 접근할 수 있습니다:
     ```
@@ -163,7 +163,7 @@ Endpoints
     System check identified no issues (0 silenced).
     ..........
     ----------------------------------------------------------------------
-    Ran 10 tests in 4.688s
+    Ran 14 tests in 5.913s
 
     OK
     Destroying test database for alias 'default'...
