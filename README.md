@@ -124,11 +124,11 @@ Installation
     Quit the server with CONTROL-C.
     ```
     
-10. Access to the admin login page on browser and sign in as admin. (IP address is hidden for security)
+10. Access to the server and sign in as an admin. (IP address is hidden for security)
     ```
-    https://***.***.***.***:8000/admin/
+    https://***.***.***.***:8000/
     ```
-    ![image](https://user-images.githubusercontent.com/33472400/73090540-e5c85600-3f1b-11ea-9ed9-8b9f3e834f93.png)
+    ![image](https://user-images.githubusercontent.com/33472400/74009806-544eee80-49c7-11ea-9b23-a8406bd91a0b.png)
 
 11. Once you have signed in, you can access to the endpoints like:
     ```
@@ -163,7 +163,7 @@ How to Test
     System check identified no issues (0 silenced).
     ..........
     ----------------------------------------------------------------------
-    Ran 10 tests in 4.688s
+    Ran 14 tests in 5.913s
 
     OK
     Destroying test database for alias 'default'...
