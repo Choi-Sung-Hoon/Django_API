@@ -1,21 +1,21 @@
-from .views import polls_list, polls_detail
-
-from django.test import TestCase
-from rest_framework.test import APITestCase
-from rest_framework.test import APIRequestFactory
-from rest_framework.test import APIClient
-
 from django.contrib.auth import get_user_model
-from rest_framework.authtoken.models import Token
+from django.test import TestCase
 
-from polls import apiviews
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
+from rest_framework.test import APIRequestFactory
+from rest_framework.test import APITestCase
+
+from .apiviews import PollViewSet
+from .models import Choice, Poll
+from .views import polls_detail, polls_list
 
 
 # Create your tests here.
 class TestPoll(APITestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.view = apiviews.PollViewSet.as_view({'get': 'list'})
+        self.view = PollViewSet.as_view({'get': 'list'})
         self.uri = '/polls/'
 
         self.client = APIClient()
@@ -35,6 +35,24 @@ class TestPoll(APITestCase):
             username,
             email=email,
             password=password)
+
+    def test_str(self):
+        self.client.login(username='test_user1', password='test_user1')
+        User = get_user_model()
+        params = {
+            "question": "How are you?",
+            "created_by": User.objects.get(username='test_user1').pk
+        }
+        # create a poll
+        response = self.client.post(self.uri, params)
+        self.assertEqual(
+            response.status_code,
+            201,
+            'Expected Response Code 201, received {0} instead.'
+            .format(response.status_code))
+
+        poll = Poll.objects.get(pk=1)
+        self.assertEqual(str(poll), "How are you?")
 
     # GET test with APIRquestFactory. This should return 200 for
     # success from listing polls.
@@ -154,7 +172,7 @@ class TestChoice(APITestCase):
 
     @staticmethod
     def create_poll(self):
-        self.view = apiviews.PollViewSet.as_view({'get': 'list'})
+        self.view = PollViewSet.as_view({'get': 'list'})
         self.client.login(username='test_user1', password='test_user1')
         self.uri = '/polls/'
         User = get_user_model()
@@ -168,6 +186,24 @@ class TestChoice(APITestCase):
             201,
             'Expected Response Code 201, received {0} instead.'
             .format(response.status_code))
+
+    def test_str(self):
+        self.client.login(username='test_user1', password='test_user1')
+        self.uri = '/polls/1/choices/'
+        params = {
+            "choice_text": "test",
+            "poll": 1
+        }
+        # create a choice
+        response = self.client.post(self.uri, params)
+        self.assertEqual(
+            response.status_code,
+            201,
+            'Expected Response Code 201, received {0} instead.'
+            .format(response.status_code))
+
+        choice = Choice.objects.get(poll=1)
+        self.assertEqual(str(choice), "test")
 
     # GET test with APIClient. This should return 200 for success
     # from listing choices.
