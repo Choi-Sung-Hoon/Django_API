@@ -1,14 +1,14 @@
-from .models import Poll, Choice
-from .views import polls_list, polls_detail
-from .apiviews import PollViewSet
-
-from django.test import TestCase
-from rest_framework.test import APITestCase
-from rest_framework.test import APIRequestFactory
-from rest_framework.test import APIClient
-
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
 from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
+from rest_framework.test import APIRequestFactory
+from rest_framework.test import APITestCase
+
+from .apiviews import PollViewSet
+from .models import Choice, Poll
+from .views import polls_detail, polls_list
 
 
 # Create your tests here.
@@ -52,7 +52,7 @@ class TestPoll(APITestCase):
             .format(response.status_code))
 
         poll = Poll.objects.get(pk=1)
-        self.assertEqual(str(poll), "How are you?")    
+        self.assertEqual(str(poll), "How are you?")
 
     # GET test with APIRquestFactory. This should return 200 for
     # success from listing polls.
